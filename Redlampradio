@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Red Lamp Radio | Live Demo</title>
+  <style>
+    /* Global Reset & Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #fcfcfc;
+      color: #222222;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Vibrant Navigation */
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 5%;
+      background-color: #ffffff;
+      border-bottom: 4px solid #e3000f;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand img {
+      max-height: 55px;
+      display: block;
+    }
+
+    /* Hamburger Button */
+    .hamburger {
+      font-size: 26px;
+      cursor: pointer;
+      color: #ffffff;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      background: #e3000f;
+      transition: background 0.3s;
+      box-shadow: 0 4px 10px rgba(227, 0, 15, 0.3);
+    }
+
+    .hamburger:hover {
+      background: #cc000d;
+    }
+
+    /* Hidden Menu Links */
+    .nav-links {
+      display: none; 
+      width: 100%;
+      flex-direction: column;
+      text-align: center;
+      gap: 15px;
+      padding-top: 20px;
+      margin-top: 15px;
+      border-top: 1px solid #eeeeee;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links.show {
+      display: flex;
+    }
+
+    .nav-links a {
+      padding: 10px 0;
+      color: #444444;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #e3000f;
+    }
+
+    /* Top Ad Banner Space */
+    .top-ad-container {
+      background-color: #f1f3f5;
+      text-align: center;
+      padding: 12px;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .ad-banner-leaderboard {
+      max-width: 728px;
+      height: 90px;
+      background: #e9ecef;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      font-size: 0.85rem;
+      border: 2px dashed #ced4da;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Rich Hero Section */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 70px 5% 50px 5%;
+      background: linear-gradient(135deg, rgba(255, 245, 245, 0.95) 0%, rgba(255, 255, 255, 0.95) 60%, rgba(255, 240, 241, 0.95) 100%), 
+                  url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .hero-content {
+      flex: 1;
+      min-width: 320px;
+      padding-right: 40px;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      background-color: #ffe6e6;
+      color: #e3000f;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      border: 1px solid #ffcccc;
+    }
+
+    .live-badge span {
+      width: 8px;
+      height: 8px;
+      background-color: #e3000f;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+      animation: pulse 1.5s infinite;
+    }
+
+    .hero-content h1 {
+      font-size: 3.2rem;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      color: #111111;
+      font-weight: 800;
+    }
+
+    .hero-content p {
+      font-size: 1.15rem;
+      color: #555555;
+      margin-bottom: 30px;
+      max-width: 500px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 12px 25px;
+      background-color: transparent;
+      color: #111111;
+      border: 2px solid #111111;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .btn-outline:hover {
+      background-color: #111111;
+      color: #ffffff;
+    }
+
+    /* Feature Bar */
+    .feature-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      background-color: #e3000f;
+      color: #ffffff;
+      padding: 25px 5%;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .feature-item h4 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+
+    .feature-item p {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    /* Professional Player Card */
+    .player-wrapper {
+      flex: 1;
+      min-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .radio-player-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 35px;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 20px 40px rgba(227, 0, 15, 0.08), 0 5px 15px rgba(0,0,0,0.05);
+      border: 1px solid #ffe6e6;
+      border-top: 5px solid #e3000f;
+    }
+
+    .station-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .station-icon {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e3000f 0%, #a80007 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.6rem;
+      margin-right: 20px;
+      box-shadow: 0 6px 15px rgba(227, 0, 15, 0.3);
+    }
+
+    .station-details h3 {
+      margin: 0 0 5px 0;
+      color: #111111;
+      font-size: 1.6rem;
+    }
+
+    .live-indicator {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #e3000f;
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Official Store Badges under Player */
+    .app-badges-container {
+      display: flex;
+      gap: 15px;
+      margin-top: 18px;
+      justify-content: center;
+      width: 100%;
+      max-width: 450px;
+    }
+
+    .app-badge-link img {
+      height: 42px;
+      width: auto;
+      transition: transform 0.2s ease;
+    }
+
+    .app-badge-link img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Live Equalizer Animation */
+    .equalizer {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 14px;
+      margin-right: 8px;
+    }
+
+    .equalizer .bar {
+      width: 4px;
+      background-color: #e3000f;
+      border-radius: 2px;
+      animation: bounce 1s infinite ease-in-out;
+    }
+
+    .equalizer .bar:nth-child(1) { animation-delay: 0s; height: 8px; }
+    .equalizer .bar:nth-child(2) { animation-delay: 0.2s; height: 14px; }
+    .equalizer .bar:nth-child(3) { animation-delay: 0.4s; height: 10px; }
+    .equalizer .bar:nth-child(4) { animation-delay: 0.1s; height: 6px; }
+
+    @keyframes bounce {
+      0%, 100% { transform: scaleY(0.5); }
+      50% { transform: scaleY(1); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.7; }
+    }
+
+    .custom-player {
+      width: 100%;
+      outline: none;
+    }
+
+    /* Action Grid */
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      padding: 90px 5%;
+      background-color: #ffffff;
+    }
+
+    .action-card {
+      background-color: #fff9f9;
+      padding: 35px 25px;
+      border-radius: 14px;
+      text-align: center;
+      border: 1px solid #ffe6e6;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .action-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(227, 0, 15, 0.08);
+      border-color: #e3000f;
+    }
+
+    .action-card h3 {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+      color: #111111;
+    }
+
+    .action-card p {
+      color: #666666;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 22px;
+      background-color: #e3000f;
+      color: #ffffff;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #cc000d;
+      box-shadow: 0 5px 15px rgba(227, 0, 15, 0.3);
+    }
+
+    /* Mid-Page Sponsor Ad Showcase Section */
+    .sponsor-showcase {
+      padding: 60px 5%;
+      background-color: #f8f9fa;
+      text-align: center;
+      border-top: 1px solid #eeeeee;
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    .sponsor-showcase h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .sponsor-banner-box {
+      max-width: 728px;
+      height: 90px;
+      background: #ffffff;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #adb5bd;
+      font-size: 0.9rem;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* About Section */
+    .about-section {
+      padding: 90px 5%;
+      background-color: #fafafa;
+      text-align: center;
+    }
+
+    .about-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .about-content h2 {
+      font-size: 2.3rem;
+      margin-bottom: 25px;
+      color: #111111;
+    }
+
+    .about-content p {
+      font-size: 1.15rem;
+      color: #555555;
+      margin-bottom: 20px;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px;
+      background-color: #1a1a1a;
+      color: #aaaaaa;
+    }
+
+    @media (max-width: 900px) {
+      .hero { flex-direction: column; text-align: center; padding-top: 50px; }
+      .hero-content { padding-right: 0; margin-bottom: 40px; }
+      .hero-buttons { justify-content: center; }
+      .equalizer { margin: 0 auto; }
+      .live-indicator { justify-content: center; }
+      .ad-banner-leaderboard, .sponsor-banner-box { max-width: 100%; height: 70px; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sponsor Ad Spot -->
+  <div class="top-ad-container">
+    <div class="ad-banner-leaderboard">
+      Advertisement Space (728x90 Leaderboard)
+    </div>
+  </div>
+
+  <nav>
+    <div class="nav-brand">
+      <img src="https://redlampradio.com/wp-content/uploads/2021/04/Red-Lamp-New-Logo.png" alt="Red Lamp Radio Logo">
+    </div>
+    
+    <div class="hamburger" id="hamburgerBtn">
+      &#9776; Menu
+    </div>
+
+    <div class="nav-links" id="mobileMenu">
+      <a href="https://redlampradio.com/">Home</a>
+      <a href="https://redlampradio.com/whats-on/">What’s On</a>
+      <a href="https://redlampradio.com/how-to-listen/">How To Listen</a>
+      <a href="https://redlampradio.com/people-presenters/">People & Presenters</a>
+      <a href="https://redlampradio.com/merchandise/">Shop</a>
+      <a href="https://redlampradio.com/work-with-us/">Work With Us</a>
+      <a href="https://redlampradio.com/advertise/">Advertise</a>
+      <a href="https://redlampradio.com/contact-us/">Contact Us</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="live-badge"><span></span> Broadcasting Live 24/7</div>
+      <h1>Keeping the lamp on 24 hours a day!!</h1>
+      <p>The UK station with a Spanish heart. Tune in from anywhere in the world on our secure, high-quality live stream.</p>
+      <div class="hero-buttons">
+        <a href="https://redlampradio.com/how-to-listen/" class="btn">How To Listen</a>
+        <a href="https://redlampradio.com/people-presenters/" class="btn-outline">Meet Presenters</a>
+      </div>
+    </div>
+    
+    <!-- Player Wrapper -->
+    <div class="player-wrapper">
+      <div class="radio-player-card">
+        <div class="station-header">
+          <div class="station-icon">RL</div>
+          <div class="station-details">
+            <h3>Live Studio Feed</h3>
+            <p class="live-indicator">
+              <span class="equalizer">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+              </span>
+              On Air Now
+            </p>
+          </div>
+        </div>
+        
+        <audio controls class="custom-player">
+          <source src="https://s7.voscast.com/cdn/?k=6abcd5e519606&m=;stream1790642265200/1" type="audio/mpeg">
+          Your browser does not support the audio player.
+        </audio>
+      </div>
+
+      <!-- Official App Store Image Badges directly under the player -->
+      <div class="app-badges-container">
+        <a href="https://play.google.com/store/apps/details?id=com.kaleidoscopic.RedLampRadio" target="_blank" class="app-badge-link">
+          <img src="https://redlampradio.com/wp-content/uploads/2019/03/Google-play-store-icon-vector-27-Final.jpg" alt="Get it on Google Play">
+        </a>
+        <a href="https://apps.apple.com/gb/app/red-lamp-radio/id6467853205" target="_blank" class="app-badge-link">
+          <img src="https://redlampradio.com/wp-content/uploads/2019/03/Download-on-the-app-store-Final.jpg" alt="Download on the App Store">
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Bar -->
+  <div class="feature-bar">
+    <div class="feature-item">
+      <h4>🎵 24/7 Music Variety</h4>
+      <p>All styles & genres represented</p>
+    </div>
+    <div class="feature-item">
+      <h4>⭐ Unsigned Artists</h4>
+      <p>We champion independent talent</p>
+    </div>
+    <div class="feature-item">
+      <h4>🎙️ Passionate Team</h4>
+      <p>Manned by dedicated volunteers</p>
+    </div>
+  </div>
+
+  <!-- Action Grid including Podcasts & Shop -->
+  <section class="action-grid">
+    <div class="action-card">
+      <h3>Sponsor a Show</h3>
+      <p>We are genuinely grateful for show sponsorship. Support independent radio today.</p>
+      <a href="https://redlampradio.com/advertise/" class="btn">Become a Sponsor</a>
+    </div>
+    <div class="action-card">
+      <h3>Visit Our Shop</h3>
+      <p>Check out the cool branded merchandise in our shop to support the station.</p>
+      <a href="https://redlampradio.com/merchandise/" class="btn">Browse Merch</a>
+    </div>
+    <div class="action-card">
+      <h3>Recorded Podcasts</h3>
+      <p>Catch up on missed shows and exclusive recorded sessions on our official SoundCloud archive.</p>
+      <a href="https://soundcloud.com/user-600534076" target="_blank" class="btn">Listen on SoundCloud</a>
+    </div>
+    <div class="action-card">
+      <h3>Work With Us</h3>
+      <p>We're mostly manned by volunteers with a love for radio. Get involved!</p>
+      <a href="https://redlampradio.com/work-with-us/" class="btn">Join the Team</a>
+    </div>
+  </section>
+
+  <!-- Mid-Page Ad Showcase Position -->
+  <div class="sponsor-showcase">
+    <h3>Featured Station Partner & Sponsor</h3>
+    <div class="sponsor-banner-box">
+      Prime Ad Slot / Sponsor Banner (728x90)
+    </div>
+  </div>
+
+  <section class="about-section">
+    <div class="about-content">
+      <h2>Our Ethos is Simple</h2>
+      <p>We're big enough to manage, small enough to care, & good enough to deliver a wonderful radio experience.</p>
+      <p>Variety is absolutely key here, with all styles of music & genre's represented, & we particularly champion unsigned bands & artists, so get in touch all you budding stars!</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Red Lamp Radio | Operated by Soudini</p>
+  </footer>
+
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburgerBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('show');
+    });
+  </script>
+
+</body>
+</html>
